@@ -10,8 +10,8 @@
     "prepare": "husky install",
     "postinstall": "husky install",
     "lint:fix": "next lint --dir . --fix",
-    "format": "prettier --check ./src",
-    "format:fix": "prettier --write ./src",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit"
   },
   "dependencies": {

@@ -1,9 +1,9 @@
 {
-  "extends": ["next/core-web-vitals", "airbnb-base","prettier"],
+  "extends": ["next/core-web-vitals", "airbnb-base", "prettier"],
   "rules": {
     "no-unused-vars": 1,
     "no-console": 1,
-    "indent": 1,
+    "indent": ["error", 4],
     "prettier/prettier": [
       "error",
       {
@@ -11,8 +11,7 @@
         "singleQuote": true,
         "printWidth": 100,
         "tabWidth": 4,
-        "semi": true,
-        
+        "semi": true
       }
     ]
   },
