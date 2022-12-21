@@ -1,53 +1,104 @@
-import React from 'react';
-import { Sidenav, Nav } from 'rsuite';
-import DashboardIcon from '@rsuite/icons/Dashboard';
-import GroupIcon from '@rsuite/icons/legacy/Group';
-import MagicIcon from '@rsuite/icons/legacy/Magic';
-import GearCircleIcon from '@rsuite/icons/legacy/GearCircle';
+import React, { useState } from 'react';
+import Sidebar from 'rsuite/Sidebar';
+import Sidenav from 'rsuite/Sidenav';
+import Content from 'rsuite/Content';
+import Nav from 'rsuite/Nav';
+import Container from 'rsuite/Container';
+import classNames from 'classnames';
+import NavToggle from '../atom/NavToggle';
+import Header from '../atom/Header';
+import Brand from '../atom/Brand';
+import useWindowSize from '../../hooks/useWindowSize';
 
-export default function Sidebar() {
-    const [expanded, setExpanded] = React.useState(true);
-    const [activeKey, setActiveKey] = React.useState('1');
+// const { getHeight, on } = DOMHelper;
+
+const NavItem = (props: any) => {
+    const { title, eventKey, ...rest } = props;
     return (
-        <div style={{ width: 240 }}>
-            <Sidenav expanded={expanded}>
-                <Sidenav.Toggle onClick={() => setExpanded((prev) => !prev)} />
-                <Sidenav.Body>
-                    <Nav activeKey={activeKey} onSelect={setActiveKey}>
-                        <Nav.Item eventKey="1" icon={<DashboardIcon />}>
-                            Dashboard
-                        </Nav.Item>
-                        <Nav.Item eventKey="2" icon={<GroupIcon />}>
-                            User Group
-                        </Nav.Item>
-                        <Nav.Menu
-                            placement="rightStart"
-                            eventKey="3"
-                            title="Advanced"
-                            icon={<MagicIcon />}
-                        >
-                            <Nav.Item eventKey="3-1">Geo</Nav.Item>
-                            <Nav.Item eventKey="3-2">Devices</Nav.Item>
-                            <Nav.Item eventKey="3-3">Loyalty</Nav.Item>
-                            <Nav.Item eventKey="3-4">Visit Depth</Nav.Item>
-                        </Nav.Menu>
-                        <Nav.Menu
-                            placement="rightStart"
-                            eventKey="4"
-                            title="Settings"
-                            icon={<GearCircleIcon />}
-                        >
-                            <Nav.Item eventKey="4-1">Applications</Nav.Item>
-                            <Nav.Item eventKey="4-2">Channels</Nav.Item>
-                            <Nav.Item eventKey="4-3">Versions</Nav.Item>
-                            <Nav.Menu eventKey="4-5" title="Custom Action">
-                                <Nav.Item eventKey="4-5-1">Action Name</Nav.Item>
-                                <Nav.Item eventKey="4-5-2">Action Params</Nav.Item>
-                            </Nav.Menu>
-                        </Nav.Menu>
-                    </Nav>
-                </Sidenav.Body>
-            </Sidenav>
-        </div>
+        <Nav.Item eventKey={eventKey} {...rest} onClick={(event) => event.stopPropagation()}>
+            {title}
+        </Nav.Item>
     );
+};
+
+export interface NavItemData {
+    eventKey: string;
+    title: string;
+    icon?: any;
+    to?: string;
+    target?: string;
+    children?: NavItemData[];
 }
+
+export interface FrameProps {
+    navs: NavItemData[];
+    children?: React.ReactNode;
+}
+
+const Frame = (props: FrameProps) => {
+    const { navs, children } = props;
+    const windowSize = useWindowSize();
+    const [expand, setExpand] = useState(true);
+    const containerClasses = classNames('page-container', {
+        'container-full': !expand,
+    });
+
+    const navBodyStyle: React.CSSProperties = expand
+        ? { height: windowSize.height - 112, overflow: 'auto' }
+        : {};
+
+    return (
+        <Container className="frame">
+            <Sidebar
+                style={{ display: 'flex', flexDirection: 'column' }}
+                width={expand ? 260 : 56}
+                collapsible
+            >
+                <Sidenav.Header>
+                    <Brand />
+                </Sidenav.Header>
+                <Sidenav expanded={expand} appearance="subtle" defaultOpenKeys={['2', '3']}>
+                    <Sidenav.Body style={navBodyStyle}>
+                        <Nav>
+                            {navs.map((item) => {
+                                const { ...rest } = item;
+                                if (item.children) {
+                                    return (
+                                        <Nav.Menu
+                                            key={item.eventKey}
+                                            placement="rightStart"
+                                            trigger="hover"
+                                            {...rest}
+                                        >
+                                            {item.children.map((child) => (
+                                                <NavItem key={child.eventKey} {...child} />
+                                            ))}
+                                        </Nav.Menu>
+                                    );
+                                }
+
+                                if (rest.target === '_blank') {
+                                    return (
+                                        <Nav.Item key={item.eventKey} {...rest}>
+                                            {item.title}
+                                        </Nav.Item>
+                                    );
+                                }
+
+                                return <NavItem key={rest.eventKey} {...rest} />;
+                            })}
+                        </Nav>
+                    </Sidenav.Body>
+                </Sidenav>
+                <NavToggle expand={expand} onChange={() => setExpand(!expand)} />
+            </Sidebar>
+
+            <Container className={containerClasses}>
+                <Header />
+                <Content>{children}</Content>
+            </Container>
+        </Container>
+    );
+};
+
+export default Frame;
