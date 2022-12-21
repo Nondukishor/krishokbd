@@ -1,4 +1,4 @@
-import 'rsuite/dist/rsuite.css';
+import '../styles/index.less';
 import type { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
 import React from 'react';

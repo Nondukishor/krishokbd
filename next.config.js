@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const nextConfig = {
+module.exports = {
     reactStrictMode: true,
     webpack(config) {
         config.module.rules.push({
@@ -36,4 +36,4 @@ const nextConfig = {
     },
 };
 
-module.exports = nextConfig;
+// module.exports = nextConfig;

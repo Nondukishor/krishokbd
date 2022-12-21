@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import Container from 'rsuite/Container';
 import Sidebar from 'rsuite/Sidebar';
 import Sidenav from 'rsuite/Sidenav';
@@ -47,9 +47,10 @@ const LayoutContextProvider = ({ children }: ILayoutCtxProvider) => {
                     width={showSidebar ? 260 : 56}
                     collapsible
                 >
-                    <Sidenav.Header>
+                    <Sidenav.Header onClick={() => setShowSidebar((prev) => !prev)}>
                         <Brand />
                     </Sidenav.Header>
+
                     <Sidenav
                         expanded={showSidebar}
                         appearance="subtle"
@@ -85,7 +86,7 @@ const LayoutContextProvider = ({ children }: ILayoutCtxProvider) => {
                         </Sidenav.Body>
                         <NavToggle
                             expand={showSidebar}
-                            onChange={() => setShowSidebar(!showSidebar)}
+                            onChange={() => setShowSidebar((prev) => !prev)}
                         />
                     </Sidenav>
                 </Sidebar>
