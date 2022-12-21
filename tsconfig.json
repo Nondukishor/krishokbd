@@ -11,11 +11,20 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "jsx": "preserve",
     "incremental": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "baseUrl":".",
+  "path":{
+    "@/pages":  ["pages/*"],
+    "@/hooks":["hooks/*"],
+    "@/config": ["config/*"],
+    "@/components":["components/*"],
+    "@/utils":["utils/*"]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.d.ts"],
   "exclude": ["node_modules"]
 }

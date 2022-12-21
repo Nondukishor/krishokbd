@@ -5,6 +5,8 @@ import styles from '../styles/Home.module.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
+const DefaultLayout = (props: any) => <div>{props.children}</div>;
+
 export default function Home() {
     return (
         <>
@@ -114,3 +116,5 @@ export default function Home() {
         </>
     );
 }
+
+Home.Layout = DefaultLayout;

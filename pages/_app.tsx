@@ -1,6 +1,22 @@
 import '../styles/globals.css';
+import 'rsuite/dist/rsuite.css';
 import type { AppProps } from 'next/app';
+import { ApolloProvider } from '@apollo/client';
+import React from 'react';
+import client from '../config/client';
+import LayoutContextProvider from '../context/LayoutContext';
 
-export default function App({ Component, pageProps }: AppProps) {
-    return <Component {...pageProps} />;
+interface MyAppProps extends Omit<AppProps, 'Component'> {
+    Component: any;
 }
+function App({ Component, pageProps }: MyAppProps) {
+    return (
+        <ApolloProvider client={client}>
+            <LayoutContextProvider>
+                <Component {...pageProps} />
+            </LayoutContextProvider>
+        </ApolloProvider>
+    );
+}
+
+export default App;

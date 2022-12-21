@@ -4,6 +4,8 @@
     "no-unused-vars": 1,
     "no-console": 1,
     "indent": ["error", 4],
+    "import/extensions": 0,
+    "no-underscore-dangle": 0,
     "prettier/prettier": [
       "error",
       {
