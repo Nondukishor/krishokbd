@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import Container from 'rsuite/Container';
 import Sidebar from 'rsuite/Sidebar';
 import Sidenav from 'rsuite/Sidenav';
@@ -22,7 +22,10 @@ const NavItem = (props: any) => {
     );
 };
 
-export const LayoutContext = createContext<layoutContext>({});
+export const LayoutContext = createContext<layoutContext>({
+    showSidebar: true,
+    setShowSidebar: () => {},
+});
 
 const LayoutContextProvider = ({ children }: ILayoutCtxProvider) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false);
@@ -84,10 +87,7 @@ const LayoutContextProvider = ({ children }: ILayoutCtxProvider) => {
                                 })}
                             </Nav>
                         </Sidenav.Body>
-                        <NavToggle
-                            expand={showSidebar}
-                            onChange={() => setShowSidebar((prev) => !prev)}
-                        />
+                        <NavToggle />
                     </Sidenav>
                 </Sidebar>
                 <Container className={containerClasses}>
